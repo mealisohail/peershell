@@ -1,6 +1,16 @@
 # peershell
 
-Self-hosted clone of [skyping.app](https://skyping.app). Run a CLI agent on your machine, get a 6-digit code, share your terminal into someone else's browser over peer-to-peer WebRTC. The signaling server only sees the handshake — your terminal bytes flow directly between the two peers (DTLS-encrypted by WebRTC).
+Run a CLI agent on your machine, get a 6-digit code, share your terminal into someone else's browser over peer-to-peer WebRTC. The signaling server only sees the handshake — your terminal bytes flow directly between the two peers (DTLS-encrypted by WebRTC).
+
+**Live:** https://peershell.vercel.app · **Source:** https://github.com/mealisohail/peershell
+
+Install the agent (needs Go 1.22+):
+
+```bash
+curl -fsSL https://peershell.vercel.app/install.sh | sh
+```
+
+![peershell demo: host runs the agent, viewer enters the 6-digit code, and gets a live shell in the browser](docs/media/demo.gif)
 
 ## Layout
 
