@@ -1,0 +1,18 @@
+# Phase 0 stub. Wired up properly once signaling and web have real implementations.
+# The agent is NOT in this compose file — it must run on the host to get a real PTY.
+
+services:
+  signaling:
+    build:
+      context: ./signaling
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: "8080"
+      NODE_ENV: "development"
+      RATE_LIMIT_PER_MINUTE: "5"
+      CODE_TTL_SECONDS: "600"
+      LOG_LEVEL: "info"
+
+  # Web dev server runs via `npm run dev` for now; will add a static nginx
+  # container once the client is implemented and we have a production build.
