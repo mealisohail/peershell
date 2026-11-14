@@ -127,7 +127,7 @@ export function mountPairing(
   mountInstallTerminalBlock(installHost, {
     heading: "New here? Install the agent first.",
     subline: "Run this on the machine you want to share.",
-    command: "curl -fsSL peershell.app/install.sh | sh",
+    command: "curl -fsSL https://peershell.vercel.app/install.sh | sh",
   });
 
   function hidePreview(): void {

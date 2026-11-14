@@ -223,7 +223,7 @@ export function mountLanding(host: HTMLElement): void {
         </p>
         <div class="cta__actions">
           <a class="btn btn--primary" href="/app">Open the web client</a>
-          <a class="btn btn--outline" href="https://github.com" rel="noopener">Read the source on GitHub</a>
+          <a class="btn btn--outline" href="https://github.com/mealisohail/peershell" rel="noopener">Read the source on GitHub</a>
         </div>
       </div>
     </section>
@@ -235,7 +235,7 @@ export function mountLanding(host: HTMLElement): void {
   mountFooter(host.querySelector<HTMLElement>("[data-footer-host]")!);
   mountTerminalMockup(host.querySelector<HTMLElement>("[data-mockup]")!);
   mountInstallBlock(host.querySelector<HTMLElement>("[data-install]")!, {
-    command: "curl -fsSL peershell.app/install.sh | sh",
+    command: "curl -fsSL https://peershell.vercel.app/install.sh | sh",
     label: "ONE COMMAND",
   });
 }

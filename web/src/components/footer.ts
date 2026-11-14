@@ -17,17 +17,17 @@ const COLUMNS: Column[] = [
   {
     heading: "Developers",
     links: [
-      { label: "GitHub", href: "https://github.com", external: true },
-      { label: "Documentation", href: "https://github.com", external: true },
-      { label: "Protocol spec", href: "https://github.com", external: true },
+      { label: "GitHub", href: "https://github.com/mealisohail/peershell", external: true },
+      { label: "Documentation", href: "https://github.com/mealisohail/peershell#readme", external: true },
+      { label: "Protocol spec", href: "https://github.com/mealisohail/peershell/tree/main/docs", external: true },
     ],
   },
   {
     heading: "Project",
     links: [
       { label: "About", href: "/#use-cases" },
-      { label: "License (MIT)", href: "https://github.com", external: true },
-      { label: "Changelog", href: "https://github.com", external: true },
+      { label: "License (MIT)", href: "https://github.com/mealisohail/peershell", external: true },
+      { label: "Changelog", href: "https://github.com/mealisohail/peershell/commits/main", external: true },
     ],
   },
 ];
