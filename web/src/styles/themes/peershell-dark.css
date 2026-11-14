@@ -1,0 +1,35 @@
+/* Peershell Dark — warm-tinted brand dark theme. Matches the marketing
+   terminal mockup so the agent terminal users see in the hero is the
+   same look they get once paired. */
+
+[data-theme="peershell-dark"] {
+  --term-bg: #1d1411;
+  --term-fg: #f0e6d6;
+  --term-cursor: #f0e6d6;
+  --term-selection: #3a2a22;
+
+  --term-black: #1d1411;
+  --term-red: #f87171;
+  --term-green: #5fd067;
+  --term-yellow: #f4c060;
+  --term-blue: #7aa2f7;
+  --term-magenta: #c47ad6;
+  --term-cyan: #6dd0d0;
+  --term-white: #cbb9a0;
+
+  --term-bright-black: #6b5848;
+  --term-bright-red: #ff8888;
+  --term-bright-green: #7dd483;
+  --term-bright-yellow: #f7ce80;
+  --term-bright-blue: #95b6ff;
+  --term-bright-magenta: #d39ee0;
+  --term-bright-cyan: #88dada;
+  --term-bright-white: #f0e6d6;
+
+  --chrome-bg: #150e0b;
+  --chrome-surface: #1a120f;
+  --chrome-border: #2e231d;
+  --chrome-fg: #f0e6d6;
+  --chrome-fg-muted: #a8917a;
+  --chrome-accent: #b8401f;
+}

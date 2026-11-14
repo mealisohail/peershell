@@ -1,0 +1,66 @@
+/* Theme variable contract — every theme file MUST define every token in
+   this contract. Default values live on :root and match Peershell Dark
+   so the app renders correctly before the data-theme attribute is set.
+
+   Layers:
+     • --term-*   → xterm.js theme + the terminal content surface
+     • --chrome-* → app bar, tab bar, settings drawer, modals, etc.
+
+   Themes apply by setting [data-theme="<name>"] on <html>. The transitions
+   on --chrome-bg and --term-bg below provide the subtle 150ms fade
+   between themes called out in the brief. */
+
+:root {
+  /* Terminal — Peershell Dark defaults */
+  --term-bg: #1d1411;
+  --term-fg: #f0e6d6;
+  --term-cursor: #f0e6d6;
+  --term-selection: #3a2a22;
+
+  --term-black: #1d1411;
+  --term-red: #f87171;
+  --term-green: #5fd067;
+  --term-yellow: #f4c060;
+  --term-blue: #7aa2f7;
+  --term-magenta: #c47ad6;
+  --term-cyan: #6dd0d0;
+  --term-white: #cbb9a0;
+
+  --term-bright-black: #6b5848;
+  --term-bright-red: #ff8888;
+  --term-bright-green: #7dd483;
+  --term-bright-yellow: #f7ce80;
+  --term-bright-blue: #95b6ff;
+  --term-bright-magenta: #d39ee0;
+  --term-bright-cyan: #88dada;
+  --term-bright-white: #f0e6d6;
+
+  /* Chrome — frames around the terminal */
+  --chrome-bg: #150e0b;
+  --chrome-surface: #1a120f;
+  --chrome-border: #2e231d;
+  --chrome-fg: #f0e6d6;
+  --chrome-fg-muted: #a8917a;
+  --chrome-accent: #b8401f;
+
+  /* Functional state colors (do not retint by theme — status is functional) */
+  --status-ok: #5fd067;
+  --status-warn: #f7ce80;
+  --status-err: #f87171;
+}
+
+html {
+  transition:
+    background-color 150ms var(--ease-out),
+    color 150ms var(--ease-out);
+}
+
+/* Targets that should fade between themes — bg only, no chrome flash. */
+.termapp,
+.termapp__appbar .appbar,
+.termapp__tabbar .tabbar,
+.termapp__pane {
+  transition: background-color 150ms var(--ease-out),
+    border-color 150ms var(--ease-out),
+    color 150ms var(--ease-out);
+}

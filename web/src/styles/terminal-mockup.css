@@ -1,0 +1,173 @@
+.tm {
+  background: var(--term-bg);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-terminal);
+  border: 1px solid color-mix(in srgb, var(--term-bg) 60%, var(--ink));
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.tm__chrome {
+  height: 36px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: color-mix(in srgb, var(--term-bg) 80%, #000);
+  border-bottom: 1px solid color-mix(in srgb, var(--term-bg) 40%, #000);
+  position: relative;
+}
+
+.tm__lights {
+  display: flex;
+  gap: 7px;
+}
+
+.tm__light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.tm__light--r {
+  background: #ff5f57;
+}
+.tm__light--y {
+  background: #febc2e;
+}
+.tm__light--g {
+  background: #28c840;
+}
+
+.tm__title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--term-muted);
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+.tm__body {
+  padding: 22px 26px 26px;
+  font-family: var(--font-mono);
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--term-fg);
+  min-height: 240px;
+}
+
+.tm__line {
+  display: block;
+  white-space: pre-wrap;
+}
+
+.tm__line--cmd {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.tm__prompt {
+  color: var(--term-muted);
+}
+
+.tm__typed {
+  color: var(--term-fg);
+}
+
+.tm__line--status {
+  color: var(--term-fg);
+}
+
+.tm__line--muted {
+  color: var(--term-muted);
+}
+
+.tm__line--info {
+  color: var(--term-fg);
+}
+
+.tm__label {
+  color: var(--term-muted);
+}
+
+.tm__accent {
+  color: var(--term-accent);
+  font-weight: 600;
+}
+
+.tm__dot,
+.tm__check {
+  color: var(--term-status);
+  margin-right: 2px;
+}
+
+.tm__muted {
+  color: var(--term-muted);
+}
+
+.tm__cursor {
+  display: inline-block;
+  width: 9px;
+  height: 1.05em;
+  background: var(--term-fg);
+  vertical-align: text-bottom;
+  margin-left: 4px;
+  animation: tm-blink 1s steps(1) infinite;
+}
+
+.tm__cursor--trailing {
+  margin-left: 6px;
+}
+
+@keyframes tm-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm__cursor {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 560px) {
+  .tm__body {
+    padding: 18px 16px 22px;
+    font-size: 12.5px;
+  }
+}
+
+@media (max-width: 420px) {
+  .tm__body {
+    padding: 14px 14px 18px;
+    font-size: 11.5px;
+    line-height: 1.7;
+    min-height: 220px;
+  }
+  .tm__chrome {
+    height: 30px;
+    padding: 0 12px;
+  }
+  .tm__light {
+    width: 10px;
+    height: 10px;
+  }
+  .tm__title {
+    font-size: 11px;
+  }
+}

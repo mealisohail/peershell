@@ -1,0 +1,151 @@
+.nav {
+  position: fixed;
+  top: 22px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--paper-soft);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-pill);
+  padding: 6px;
+  box-shadow: var(--shadow-nav);
+  pointer-events: auto;
+}
+
+.nav__wordmark {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  padding: 8px 16px;
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--radius-pill);
+  transition: background var(--t-fast) var(--ease-out);
+}
+
+.nav__wordmark:hover {
+  color: var(--ink);
+  background: #fff;
+}
+
+.nav__links {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.nav__link {
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  border-radius: var(--radius-pill);
+  transition: background var(--t-fast) var(--ease-out),
+    color var(--t-fast) var(--ease-out);
+}
+
+.nav__link:hover {
+  color: var(--ink);
+  background: var(--accent-tint);
+}
+
+.nav__cta {
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--accent);
+  color: var(--paper);
+  border-radius: var(--radius-pill);
+  transition: background var(--t-fast) var(--ease-out);
+}
+
+.nav__cta:hover {
+  background: var(--accent-dark);
+  color: var(--paper);
+}
+
+.nav__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  background: var(--paper);
+  border-radius: var(--radius-pill);
+}
+
+.nav__status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--term-status);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--term-status) 24%, transparent);
+  transition:
+    background var(--t-fast) var(--ease-out),
+    box-shadow var(--t-fast) var(--ease-out);
+}
+
+.nav__status--connecting .nav__status-dot {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 24%, transparent);
+}
+
+.nav__status--disconnected .nav__status-dot {
+  background: var(--accent-dark);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-dark) 18%, transparent);
+}
+
+@media (max-width: 720px) {
+  .nav__links {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav__inner {
+    padding: 5px;
+    gap: 4px;
+  }
+  .nav__wordmark {
+    padding: 7px 12px;
+    font-size: 14px;
+  }
+  .nav__cta {
+    padding: 8px 13px;
+    font-size: 13px;
+  }
+  .nav__status {
+    padding: 7px 12px 7px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 380px) {
+  .nav {
+    top: 14px;
+  }
+  .nav__inner {
+    padding: 4px;
+    gap: 3px;
+  }
+  .nav__wordmark {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  /* On tiny screens, drop the CTA verb to keep the pill compact. */
+  .nav__cta {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,239 @@
+.pairing {
+  min-height: 100vh;
+  padding-block: clamp(110px, 16vh, 180px) clamp(56px, 10vh, 120px);
+}
+
+.pairing__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(20px, 3vw, 28px);
+}
+
+.pairing__title {
+  margin: 12px 0 0;
+  max-width: 16ch;
+}
+
+@media (max-width: 480px) {
+  .pairing__title {
+    max-width: 14ch;
+  }
+}
+
+/* Preview card — appears once the agent is found and the viewer has to
+   explicitly confirm before the WebRTC handshake begins. */
+
+.pairing__preview {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--ink) 38%, transparent);
+  opacity: 0;
+  transition: opacity var(--t-base) var(--ease-out);
+}
+
+.pairing__preview.is-open {
+  opacity: 1;
+}
+
+.pairing__preview[hidden] {
+  display: none;
+}
+
+.pairing__preview-card {
+  width: min(440px, calc(100% - 32px));
+  background: var(--paper-soft);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: 28px 28px 22px;
+  box-shadow:
+    0 30px 60px -20px rgba(43, 31, 26, 0.4),
+    0 12px 24px -12px rgba(43, 31, 26, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pairing__preview-kicker {
+  display: flex;
+}
+
+.pairing__preview-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-family: var(--font-mono);
+}
+
+.pairing__preview-pill--full {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+}
+
+.pairing__preview-pill--view {
+  background: color-mix(in srgb, var(--ink-muted) 16%, transparent);
+  color: var(--ink-muted);
+}
+
+.pairing__preview-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.pairing__preview-host {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.pairing__preview-host.is-empty {
+  display: none;
+}
+
+.pairing__preview-explainer {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--ink-muted);
+}
+
+.pairing__preview-actions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.pairing__preview-btn {
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition:
+    background var(--t-fast) var(--ease-out),
+    color var(--t-fast) var(--ease-out),
+    border-color var(--t-fast) var(--ease-out);
+}
+
+.pairing__preview-btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--hairline);
+}
+
+.pairing__preview-btn--ghost:hover {
+  background: var(--paper);
+  border-color: color-mix(in srgb, var(--ink) 25%, var(--hairline));
+}
+
+.pairing__preview-btn--primary {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.pairing__preview-btn--primary:hover {
+  background: var(--accent-dark);
+}
+
+/* Dark-chrome override when the pairing screen is mounted inside the
+   /app terminal-tab content host (uses chrome tokens, not paper). */
+.termapp__tab-content .pairing__preview {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.termapp__tab-content .pairing__preview-card {
+  background: var(--chrome-bg);
+  color: var(--chrome-fg);
+  border-color: var(--chrome-border);
+}
+
+.termapp__tab-content .pairing__preview-host,
+.termapp__tab-content .pairing__preview-explainer {
+  color: var(--chrome-fg-muted);
+}
+
+.termapp__tab-content .pairing__preview-pill--full {
+  background: color-mix(in srgb, var(--chrome-accent) 18%, transparent);
+  color: var(--chrome-accent);
+}
+
+.termapp__tab-content .pairing__preview-pill--view {
+  background: color-mix(in srgb, var(--chrome-fg-muted) 22%, transparent);
+  color: var(--chrome-fg-muted);
+}
+
+.termapp__tab-content .pairing__preview-btn--ghost {
+  color: var(--chrome-fg);
+  border-color: var(--chrome-border);
+}
+
+.termapp__tab-content .pairing__preview-btn--ghost:hover {
+  background: color-mix(in srgb, var(--chrome-fg) 8%, transparent);
+}
+
+.termapp__tab-content .pairing__preview-btn--primary {
+  background: var(--chrome-accent);
+  color: var(--chrome-bg);
+}
+
+.termapp__tab-content .pairing__preview-btn--primary:hover {
+  background: color-mix(in srgb, var(--chrome-accent) 80%, #000);
+}
+
+.pairing__title em {
+  display: block;
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.pairing__lead {
+  max-width: 48ch;
+  margin: 0;
+}
+
+.pairing__input {
+  margin-top: 16px;
+}
+
+.pairing__status {
+  min-height: 1.4em;
+  font-size: 14px;
+  color: var(--ink-muted);
+  letter-spacing: 0.005em;
+}
+
+.pairing__status.is-busy {
+  color: var(--ink-muted);
+}
+
+.pairing__status.is-error {
+  color: var(--accent-dark);
+  font-weight: 500;
+}
+
+.pairing__checks {
+  margin-top: -8px;
+}
+
+.pairing__install {
+  margin-top: 24px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

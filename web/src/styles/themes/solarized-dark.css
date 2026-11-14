@@ -1,0 +1,36 @@
+/* Solarized Dark — canonical palette by Ethan Schoonover.
+   https://ethanschoonover.com/solarized/
+   Base values matched exactly. Chrome uses base02/base03. Chrome accent
+   is Solarized's traditional yellow. */
+
+[data-theme="solarized-dark"] {
+  --term-bg: #002b36;       /* base03 */
+  --term-fg: #839496;       /* base0  */
+  --term-cursor: #93a1a1;   /* base1  */
+  --term-selection: #073642; /* base02 */
+
+  --term-black: #073642;
+  --term-red: #dc322f;
+  --term-green: #859900;
+  --term-yellow: #b58900;
+  --term-blue: #268bd2;
+  --term-magenta: #d33682;
+  --term-cyan: #2aa198;
+  --term-white: #eee8d5;
+
+  --term-bright-black: #002b36;
+  --term-bright-red: #cb4b16;
+  --term-bright-green: #586e75;
+  --term-bright-yellow: #657b83;
+  --term-bright-blue: #839496;
+  --term-bright-magenta: #6c71c4;
+  --term-bright-cyan: #93a1a1;
+  --term-bright-white: #fdf6e3;
+
+  --chrome-bg: #073642;
+  --chrome-surface: #0a4452;
+  --chrome-border: #1a4a55;
+  --chrome-fg: #eee8d5;
+  --chrome-fg-muted: #93a1a1;
+  --chrome-accent: #b58900;
+}

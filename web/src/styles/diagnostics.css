@@ -1,0 +1,227 @@
+/* Diagnostics popover — anchored under the connection status pill. */
+
+.diag {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  pointer-events: none;
+}
+
+.diag[hidden] {
+  display: none;
+}
+
+.diag__shell {
+  position: absolute;
+  width: 360px;
+  max-height: 480px;
+  display: flex;
+  flex-direction: column;
+  background: var(--chrome-bg);
+  color: var(--chrome-fg);
+  border: 1px solid var(--chrome-border);
+  border-radius: 10px;
+  box-shadow:
+    0 22px 44px -16px rgba(0, 0, 0, 0.5),
+    0 12px 24px -10px rgba(0, 0, 0, 0.32);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity var(--t-fast) var(--ease-out),
+    transform var(--t-fast) var(--ease-out);
+  pointer-events: auto;
+  overflow: hidden;
+}
+
+.diag.is-open .diag__shell {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.diag__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--chrome-border);
+}
+
+.diag__title {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--chrome-fg-muted);
+}
+
+.diag__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  color: var(--chrome-fg-muted);
+  transition:
+    color var(--t-fast) var(--ease-out),
+    background var(--t-fast) var(--ease-out);
+}
+
+.diag__close:hover {
+  color: var(--chrome-fg);
+  background: color-mix(in srgb, var(--chrome-fg) 8%, transparent);
+}
+
+.diag__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px 14px 14px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--chrome-border) transparent;
+}
+
+.diag__body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.diag__body::-webkit-scrollbar-thumb {
+  background: var(--chrome-border);
+  border-radius: 4px;
+}
+
+.diag__placeholder {
+  margin: 0;
+  font-size: 13px;
+  color: var(--chrome-fg-muted);
+  padding: 16px 0;
+  text-align: center;
+}
+
+.diag__banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.diag__banner--ok {
+  background: color-mix(in srgb, var(--status-ok) 18%, transparent);
+  color: var(--chrome-fg);
+}
+
+.diag__banner--warn {
+  background: color-mix(in srgb, var(--status-warn) 22%, transparent);
+  color: var(--chrome-fg);
+}
+
+.diag__banner-icon {
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.diag__banner--ok .diag__banner-icon {
+  color: var(--status-ok);
+}
+
+.diag__banner--warn .diag__banner-icon {
+  color: var(--status-warn);
+}
+
+.diag__section {
+  margin-top: 14px;
+}
+
+.diag__section:first-of-type {
+  margin-top: 0;
+}
+
+.diag__sec-head {
+  margin: 0 0 6px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chrome-fg-muted);
+}
+
+.diag__rows {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.diag__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 12.5px;
+}
+
+.diag__row:hover {
+  background: color-mix(in srgb, var(--chrome-fg) 4%, transparent);
+}
+
+.diag__row dt {
+  color: var(--chrome-fg-muted);
+}
+
+.diag__row dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--chrome-fg);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  word-break: break-all;
+}
+
+.diag__foot {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 10px;
+  border-top: 1px solid var(--chrome-border);
+  background: color-mix(in srgb, var(--chrome-bg) 80%, transparent);
+}
+
+.diag__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-family: var(--font-mono);
+  color: var(--chrome-fg-muted);
+  transition:
+    color var(--t-fast) var(--ease-out),
+    background var(--t-fast) var(--ease-out);
+}
+
+.diag__copy:hover {
+  color: var(--chrome-fg);
+  background: color-mix(in srgb, var(--chrome-fg) 8%, transparent);
+}
+
+.diag__copy-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (max-width: 480px) {
+  .diag__shell {
+    width: calc(100vw - 16px) !important;
+    left: 8px !important;
+  }
+}

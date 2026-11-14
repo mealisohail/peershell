@@ -1,0 +1,36 @@
+/* Peershell Light — warm paper bg. Chrome lighter than terminal so the
+   terminal surface reads as the "thing you focus on" and the chrome
+   sits behind it. Foreground is the deep brown-black used by the
+   marketing pages so type contrast stays comfortable. */
+
+[data-theme="peershell-light"] {
+  --term-bg: #fbf6ee;
+  --term-fg: #2a1f1a;
+  --term-cursor: #2a1f1a;
+  --term-selection: #ead8c0;
+
+  --term-black: #2a1f1a;
+  --term-red: #9a3412;
+  --term-green: #2e7d32;
+  --term-yellow: #a17500;
+  --term-blue: #2563eb;
+  --term-magenta: #7c2d12;
+  --term-cyan: #0e7490;
+  --term-white: #f5f0e8;
+
+  --term-bright-black: #6b5848;
+  --term-bright-red: #b8401f;
+  --term-bright-green: #3a8e3f;
+  --term-bright-yellow: #b4870b;
+  --term-bright-blue: #2f6fe6;
+  --term-bright-magenta: #8e2c14;
+  --term-bright-cyan: #117f9b;
+  --term-bright-white: #2a1f1a;
+
+  --chrome-bg: #f5f0e8;
+  --chrome-surface: #ede5d4;
+  --chrome-border: #d8c9b1;
+  --chrome-fg: #2a1f1a;
+  --chrome-fg-muted: #6b5848;
+  --chrome-accent: #b8401f;
+}

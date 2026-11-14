@@ -1,0 +1,8 @@
+/* Mono font faces for the terminal. Loaded lazily by the browser — only
+   the family the user actually selects gets downloaded.
+   Geist Mono is already loaded by base.css for the marketing pages, so
+   it's not re-imported here. */
+
+@import "@fontsource/jetbrains-mono";
+@import "@fontsource/fira-code";
+@import "@fontsource/ibm-plex-mono";

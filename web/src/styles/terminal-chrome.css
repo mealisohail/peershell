@@ -1,0 +1,779 @@
+/* Terminal app chrome — theme-aware
+   All chrome surfaces now read from --chrome-* and --term-* tokens so a
+   theme swap (peershell-dark / peershell-light / solarized-dark /
+   tokyo-night) re-skins the entire app without re-rendering JS. */
+
+.termapp {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--term-bg);
+  color: var(--chrome-fg);
+  font-family: var(--font-sans);
+}
+
+.termapp__appbar {
+  flex-shrink: 0;
+}
+
+.termapp__tabbar {
+  flex-shrink: 0;
+}
+
+.termapp__content {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+}
+
+.termapp__tab-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.termapp__tab-content[hidden] {
+  display: none;
+}
+
+.termapp__pane {
+  flex: 1;
+  min-height: 0;
+  padding: 10px 12px;
+  background: var(--term-bg);
+}
+
+.termapp__pane .xterm,
+.termapp__pane .xterm .xterm-viewport,
+.termapp__pane .xterm .xterm-screen {
+  height: 100% !important;
+}
+
+.termapp__footnote {
+  flex-shrink: 0;
+  height: 28px;
+  padding: 0 12px 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--chrome-fg-muted);
+  letter-spacing: 0.02em;
+  background: var(--chrome-bg);
+  border-top: 1px solid var(--chrome-border);
+}
+
+.termapp__cwd {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+  color: var(--chrome-fg);
+}
+
+.termapp__cwd-icon {
+  flex-shrink: 0;
+  color: var(--chrome-fg-muted);
+}
+
+.termapp__cwd-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: rtl; /* truncate from the left so the tail of the path shows */
+  text-align: left;
+}
+
+.termapp__cwd-text::after {
+  content: "‎"; /* LRM keeps trailing spaces honest under direction:rtl */
+}
+
+.termapp__cwd-text:empty {
+  display: none;
+}
+
+.termapp__cwd-text[data-empty] {
+  direction: ltr;
+  color: var(--chrome-fg-muted);
+  font-style: italic;
+  cursor: help;
+}
+
+.termapp__timer {
+  font-variant-numeric: tabular-nums;
+  color: var(--chrome-fg-muted);
+}
+
+.termapp__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--chrome-fg) 5%, transparent);
+  color: var(--chrome-fg-muted);
+}
+
+.termapp__badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--status-ok);
+}
+
+@media (max-width: 720px) {
+  .termapp__cwd-text {
+    font-size: 10.5px;
+  }
+}
+
+@media (max-width: 540px) {
+  .termapp__footnote {
+    display: none;
+  }
+}
+
+.termapp__end-note {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--chrome-fg-muted);
+}
+
+/* ───────────────── App bar ──────────────────────────────────────────── */
+
+.appbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  height: 36px;
+  padding: 0 14px;
+  background: var(--chrome-bg);
+  border-bottom: 1px solid var(--chrome-border);
+  color: var(--chrome-fg);
+}
+
+.appbar__brand {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--chrome-fg);
+  letter-spacing: -0.005em;
+}
+
+.appbar__brand:hover {
+  color: var(--chrome-accent);
+}
+
+.appbar__palette {
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 26px;
+  min-width: 280px;
+  max-width: 460px;
+  padding: 0 10px 0 12px;
+  border-radius: var(--radius-pill);
+  background: var(--chrome-surface);
+  color: var(--chrome-fg-muted);
+  font-size: 12.5px;
+  border: 1px solid var(--chrome-border);
+  cursor: text;
+  transition: background var(--t-fast) var(--ease-out),
+    border-color var(--t-fast) var(--ease-out);
+}
+
+.appbar__palette:hover {
+  background: color-mix(in srgb, var(--chrome-fg) 8%, var(--chrome-surface));
+  border-color: color-mix(in srgb, var(--chrome-fg) 16%, var(--chrome-border));
+}
+
+.appbar__palette-icon {
+  display: inline-flex;
+}
+
+.appbar__palette-label {
+  flex: 1;
+  text-align: left;
+  color: var(--chrome-fg-muted);
+}
+
+.appbar__palette-kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--chrome-fg-muted);
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--chrome-fg) 6%, transparent);
+}
+
+.appbar__right {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.appbar__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--chrome-surface);
+  font-size: 12px;
+  color: var(--chrome-fg);
+  border: 1px solid var(--chrome-border);
+}
+
+.appbar__status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--chrome-fg-muted);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--chrome-fg-muted) 18%, transparent);
+}
+
+.appbar__status--connected .appbar__status-dot {
+  background: var(--status-ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--status-ok) 22%, transparent);
+}
+
+.appbar__status--connecting .appbar__status-dot,
+.appbar__status--pairing .appbar__status-dot {
+  background: var(--chrome-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--chrome-accent) 22%, transparent);
+}
+
+.appbar__status--disconnected .appbar__status-dot,
+.appbar__status--error .appbar__status-dot {
+  background: var(--status-err);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--status-err) 22%, transparent);
+}
+
+.appbar__status-text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.appbar__status-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+  border-radius: 50%;
+  color: var(--chrome-fg-muted);
+  transition:
+    color var(--t-fast) var(--ease-out),
+    background var(--t-fast) var(--ease-out);
+}
+
+.appbar__status-info:hover {
+  color: var(--chrome-fg);
+  background: color-mix(in srgb, var(--chrome-fg) 12%, transparent);
+}
+
+.appbar__mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 11.5px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+}
+
+.appbar__mode[hidden] {
+  display: none;
+}
+
+.appbar__mode--full {
+  color: var(--chrome-accent);
+  background: color-mix(in srgb, var(--chrome-accent) 14%, transparent);
+  border-color: color-mix(in srgb, var(--chrome-accent) 30%, transparent);
+}
+
+.appbar__mode--view {
+  color: var(--chrome-fg-muted);
+  background: color-mix(in srgb, var(--chrome-fg-muted) 18%, transparent);
+  border-color: color-mix(in srgb, var(--chrome-fg-muted) 30%, transparent);
+}
+
+.appbar__mode-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+@media (max-width: 720px) {
+  .appbar__mode-text {
+    display: none;
+  }
+  .appbar__mode {
+    padding: 3px 6px;
+  }
+}
+
+.appbar__settings {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 26px;
+  border-radius: var(--radius-pill);
+  color: var(--chrome-fg-muted);
+  transition: color var(--t-fast) var(--ease-out),
+    background var(--t-fast) var(--ease-out);
+}
+
+.appbar__settings:hover {
+  color: var(--chrome-fg);
+  background: color-mix(in srgb, var(--chrome-fg) 8%, transparent);
+}
+
+/* ───────────────── Tab bar ──────────────────────────────────────────── */
+
+.tabbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 8px;
+  background: var(--chrome-surface);
+  border-bottom: 1px solid var(--chrome-border);
+  /* Don't clip — the +▾ dropdown opens below the bar and the .tabbar__strip
+     already manages its own horizontal scroll, so the parent must allow
+     overflow for popovers to be visible. */
+  overflow: visible;
+}
+
+.tabbar__strip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  flex: 1;
+  min-width: 0;
+}
+
+.tabbar__strip::-webkit-scrollbar {
+  display: none;
+}
+
+.tabbar__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  min-width: 140px;
+  max-width: 220px;
+  padding: 0 10px 0 12px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--chrome-fg-muted);
+  font-size: 12.5px;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid transparent;
+  transition: background var(--t-fast) var(--ease-out),
+    color var(--t-fast) var(--ease-out),
+    border-color var(--t-fast) var(--ease-out),
+    opacity var(--t-fast) var(--ease-out);
+}
+
+.tabbar__tab:hover {
+  background: color-mix(in srgb, var(--chrome-fg) 5%, transparent);
+  color: var(--chrome-fg);
+}
+
+.tabbar__tab.is-active {
+  background: color-mix(in srgb, var(--chrome-accent) 16%, transparent);
+  color: var(--chrome-fg);
+  border-color: color-mix(in srgb, var(--chrome-accent) 40%, transparent);
+}
+
+.tabbar__tab.is-dragging {
+  opacity: 0.5;
+}
+
+.tabbar__tab.is-dragover {
+  outline: 1px dashed color-mix(in srgb, var(--chrome-accent) 50%, transparent);
+  outline-offset: 2px;
+}
+
+.tabbar__tab.is-shared::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: -1px;
+  height: 1px;
+  background: color-mix(in srgb, var(--chrome-accent) 38%, transparent);
+}
+
+.tabbar__tab-color {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tabbar__tab-color--none {
+  background: color-mix(in srgb, var(--chrome-fg) 18%, transparent);
+}
+
+.tabbar__tab-title {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+
+.tabbar__tab-title-edit {
+  flex: 1;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--chrome-accent) 60%, transparent);
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--chrome-fg);
+  outline: none;
+  min-width: 0;
+}
+
+.tabbar__tab-shared {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: color-mix(in srgb, var(--chrome-accent) 75%, var(--chrome-fg));
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--chrome-accent) 12%, transparent);
+}
+
+.tabbar__tab-eye {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--chrome-fg-muted);
+}
+
+.tabbar__tab-eye:hover {
+  color: var(--chrome-fg);
+}
+
+.tabbar__tab-status {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--chrome-fg-muted);
+  flex-shrink: 0;
+}
+
+.tabbar__tab-status--connected {
+  background: var(--status-ok);
+}
+
+.tabbar__tab-status--pairing,
+.tabbar__tab-status--connecting {
+  background: var(--chrome-accent);
+}
+
+.tabbar__tab-status--disconnected,
+.tabbar__tab-status--error {
+  background: var(--status-err);
+}
+
+.tabbar__tab-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  color: var(--chrome-fg-muted);
+  opacity: 0;
+  transition: opacity var(--t-fast) var(--ease-out),
+    background var(--t-fast) var(--ease-out),
+    color var(--t-fast) var(--ease-out);
+}
+
+.tabbar__tab:hover .tabbar__tab-close,
+.tabbar__tab.is-active .tabbar__tab-close {
+  opacity: 1;
+}
+
+.tabbar__tab-close:hover {
+  background: color-mix(in srgb, var(--chrome-fg) 10%, transparent);
+  color: var(--chrome-fg);
+}
+
+/* New-tab control group --------------------------------------------- */
+
+.tabbar__newgroup {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: color-mix(in srgb, var(--chrome-fg) 5%, transparent);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.tabbar__new,
+.tabbar__new-caret {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  color: var(--chrome-fg-muted);
+  transition: color var(--t-fast) var(--ease-out),
+    background var(--t-fast) var(--ease-out);
+}
+
+.tabbar__new {
+  width: 32px;
+  border-radius: 8px 0 0 8px;
+  padding-left: 4px;
+}
+
+.tabbar__new-caret {
+  width: 22px;
+  border-radius: 0 8px 8px 0;
+  border-left: 1px solid var(--chrome-border);
+}
+
+.tabbar__new:hover,
+.tabbar__new-caret:hover {
+  color: var(--chrome-fg);
+  background: color-mix(in srgb, var(--chrome-fg) 8%, transparent);
+}
+
+.tabbar__newmenu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 260px;
+  background: var(--chrome-bg);
+  border: 1px solid var(--chrome-border);
+  border-radius: 10px;
+  padding: 6px;
+  box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity var(--t-fast) var(--ease-out),
+    transform var(--t-fast) var(--ease-out);
+  z-index: 80;
+}
+
+.tabbar__newmenu.is-open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tabbar__newmenu[hidden] {
+  display: none;
+}
+
+.tabbar__newmenu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--chrome-fg);
+  text-align: left;
+  transition: background var(--t-fast) var(--ease-out);
+}
+
+.tabbar__newmenu-item:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--chrome-accent) 14%, transparent);
+}
+
+.tabbar__newmenu-item[disabled] {
+  color: var(--chrome-fg-muted);
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.tabbar__newmenu-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tabbar__newmenu-icon {
+  display: inline-flex;
+  width: 16px;
+  justify-content: center;
+  color: var(--chrome-accent);
+}
+
+.tabbar__newmenu-kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--chrome-fg-muted);
+}
+
+/* ───────────────── Tab context menu ─────────────────────────────────── */
+
+.tab-ctx {
+  position: fixed;
+  z-index: 200;
+  min-width: 220px;
+  background: var(--chrome-bg);
+  border: 1px solid var(--chrome-border);
+  border-radius: 10px;
+  padding: 6px;
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.55);
+  font-size: 13px;
+  color: var(--chrome-fg);
+}
+
+.tab-ctx__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 6px;
+  color: var(--chrome-fg);
+  text-align: left;
+  transition: background var(--t-fast) var(--ease-out);
+}
+
+.tab-ctx__item:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--chrome-accent) 14%, transparent);
+}
+
+.tab-ctx__item[disabled] {
+  color: var(--chrome-fg-muted);
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.tab-ctx__hint {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--chrome-fg-muted);
+}
+
+.tab-ctx__sep {
+  margin: 4px 6px;
+  height: 1px;
+  background: var(--chrome-border);
+}
+
+.tab-ctx__color-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+}
+
+.tab-ctx__color-label {
+  font-size: 12px;
+  color: var(--chrome-fg-muted);
+}
+
+.tab-ctx__swatches {
+  display: inline-flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.tab-ctx__swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--chrome-border);
+  transition: transform var(--t-fast) var(--ease-out),
+    border-color var(--t-fast) var(--ease-out);
+}
+
+.tab-ctx__swatch:hover {
+  transform: scale(1.12);
+  border-color: color-mix(in srgb, var(--chrome-fg) 40%, var(--chrome-border));
+}
+
+.tab-ctx__swatch--none {
+  background: transparent;
+  color: var(--chrome-fg-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+/* ───────────────── Pairing screen inside a tab ──────────────────────── */
+
+/* Adopt the active theme's chrome surfaces. */
+.termapp__tab-content .pairing {
+  background: transparent;
+  padding-block: clamp(40px, 8vh, 80px);
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  color: var(--chrome-fg);
+}
+
+.termapp__tab-content .pairing .display {
+  color: var(--chrome-fg);
+  font-size: clamp(32px, 5vw, 56px);
+}
+
+.termapp__tab-content .pairing .display em {
+  color: var(--chrome-accent);
+}
+
+.termapp__tab-content .pairing .lead,
+.termapp__tab-content .pairing .pairing__status {
+  color: var(--chrome-fg-muted);
+}
+
+.termapp__tab-content .pairing .pairing__status.is-error {
+  color: var(--status-err);
+}
+
+.termapp__tab-content .pairing .kicker {
+  background: color-mix(in srgb, var(--chrome-accent) 18%, transparent);
+  color: var(--chrome-accent);
+}
+
+.termapp__tab-content .pairing .check {
+  color: color-mix(in srgb, var(--chrome-accent) 80%, var(--chrome-fg));
+}
+
+.termapp__tab-content .pairing .code-input__digit {
+  background: color-mix(in srgb, var(--chrome-fg) 4%, transparent);
+  color: var(--chrome-fg);
+  border-color: var(--chrome-border);
+}
+
+.termapp__tab-content .pairing .code-input__digit.is-filled {
+  border-color: color-mix(in srgb, var(--chrome-accent) 60%, transparent);
+}
+
+.termapp__tab-content .pairing .code-input__dash {
+  background: var(--chrome-fg-muted);
+}

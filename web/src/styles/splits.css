@@ -1,0 +1,237 @@
+/* Splits — recursive pane layout + drag-resizable hairlines + per-pane
+   floating action group. */
+
+.paner-root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.paner-split {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.paner-split--vertical {
+  flex-direction: row;
+}
+
+.paner-split--horizontal {
+  flex-direction: column;
+}
+
+.paner-splitter {
+  flex-shrink: 0;
+  background: var(--chrome-border);
+  position: relative;
+  transition: background var(--t-fast) var(--ease-out);
+  z-index: 5;
+}
+
+.paner-splitter--vertical {
+  width: 1px;
+  cursor: col-resize;
+}
+
+.paner-splitter--horizontal {
+  height: 1px;
+  cursor: row-resize;
+}
+
+/* Hit area is wider than the visible line so the hairline is easy to grab. */
+.paner-splitter::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+}
+
+.paner-splitter:hover {
+  background: var(--chrome-accent);
+}
+
+.paner-splitter--vertical:hover {
+  box-shadow: 0 0 0 1.5px var(--chrome-accent);
+}
+
+.paner-splitter--horizontal:hover {
+  box-shadow: 0 0 0 1.5px var(--chrome-accent);
+}
+
+/* Leaf wrapper */
+.paner-leaf {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--term-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  transition: outline-color var(--t-fast) var(--ease-out);
+}
+
+/* When the tab has a single pane, drop the card-style chrome so the
+   terminal reads as full-bleed (no implied "this is one of several
+   panes" visual). Multi-pane brings the radius + focused ring back.
+   Also expand to fill the root — without flex:1 the leaf collapses to
+   content width and the action group lands halfway across the viewport. */
+.paner-root > .paner-leaf {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  outline: none;
+}
+
+.paner-leaf.is-focused {
+  outline-color: var(--chrome-accent);
+}
+
+.paner-root > .paner-leaf.is-focused {
+  outline: none;
+}
+
+/* Single-pane case: keep the action group (it's how users discover splits)
+   but hide the close button — closing the only pane is a no-op anyway. */
+.paner-root > .paner-leaf [data-act="close"] {
+  display: none;
+}
+
+/* ── View-only mode chrome ─────────────────────────────────────────── */
+
+/* The banner sits inside the pane's term host, above the xterm. The host
+   is a flex column inside .paner-leaf, so prepending a fixed-height row
+   reserves space for the banner cleanly. */
+.pane-viewonly-banner {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--chrome-fg-muted);
+  background: color-mix(in srgb, var(--chrome-fg-muted) 12%, transparent);
+  border-bottom: 1px solid var(--chrome-border);
+}
+
+.pane-viewonly-banner__icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* The pane host is currently a plain block — flip it to flex-column when
+   in view-only mode so the banner stacks on top of the xterm cleanly. */
+.paner-leaf__term.pane-view-only {
+  display: flex;
+  flex-direction: column;
+}
+
+.paner-leaf__term.pane-view-only .xterm {
+  flex: 1;
+  min-height: 0;
+}
+
+/* First-time "typing is disabled" toast */
+.pane-toast {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, calc(-50% + 6px));
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--chrome-bg) 92%, #000);
+  color: var(--chrome-fg);
+  font-size: 13px;
+  border: 1px solid var(--chrome-border);
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transition:
+    opacity 200ms var(--ease-out),
+    transform 200ms var(--ease-out);
+  pointer-events: none;
+  z-index: 20;
+}
+
+.pane-toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.paner-leaf__term {
+  flex: 1;
+  min-height: 0;
+  padding: 8px 10px;
+}
+
+.paner-leaf__term .xterm,
+.paner-leaf__term .xterm .xterm-viewport,
+.paner-leaf__term .xterm .xterm-screen {
+  height: 100% !important;
+}
+
+/* Floating action group — top-right corner of the focused pane, also
+   visible on hover. Sits above the xterm via z-index. */
+.paner-leaf__actions {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  background: color-mix(in srgb, var(--chrome-bg) 88%, transparent);
+  border: 1px solid var(--chrome-border);
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(-2px);
+  transition:
+    opacity var(--t-fast) var(--ease-out),
+    transform var(--t-fast) var(--ease-out);
+  z-index: 10;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+
+.paner-leaf:hover .paner-leaf__actions,
+.paner-leaf.is-focused .paner-leaf__actions {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.paner-leaf__act {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  color: var(--chrome-fg-muted);
+  transition:
+    color var(--t-fast) var(--ease-out),
+    background var(--t-fast) var(--ease-out);
+}
+
+.paner-leaf__act:hover {
+  color: var(--chrome-fg);
+  background: color-mix(in srgb, var(--chrome-fg) 10%, transparent);
+}
+
+.paner-leaf__act[data-act="close"]:hover {
+  color: var(--status-err);
+  background: color-mix(in srgb, var(--status-err) 14%, transparent);
+}
+
+/* When the renderer paints the leaf inside the tab content host, the
+   .termapp__pane wrapper around it (from terminal-chrome.css) adds extra
+   padding — disable that since the leaf brings its own. */
+.termapp__pane.paner-host {
+  padding: 0;
+}

@@ -1,0 +1,36 @@
+/* Tokyo Night — signature blue/purple-leaning dark palette.
+   https://github.com/enkia/tokyo-night-vscode-theme
+   Chrome uses Tokyo Night's "bgDark" + border colors; accent is the
+   iconic light-blue. */
+
+[data-theme="tokyo-night"] {
+  --term-bg: #1a1b26;
+  --term-fg: #c0caf5;
+  --term-cursor: #c0caf5;
+  --term-selection: #283457;
+
+  --term-black: #15161e;
+  --term-red: #f7768e;
+  --term-green: #9ece6a;
+  --term-yellow: #e0af68;
+  --term-blue: #7aa2f7;
+  --term-magenta: #bb9af7;
+  --term-cyan: #7dcfff;
+  --term-white: #a9b1d6;
+
+  --term-bright-black: #414868;
+  --term-bright-red: #ff899d;
+  --term-bright-green: #9fe044;
+  --term-bright-yellow: #faba4a;
+  --term-bright-blue: #8db0ff;
+  --term-bright-magenta: #c7a9ff;
+  --term-bright-cyan: #a4daff;
+  --term-bright-white: #c0caf5;
+
+  --chrome-bg: #16161e;
+  --chrome-surface: #1f2030;
+  --chrome-border: #292e42;
+  --chrome-fg: #c0caf5;
+  --chrome-fg-muted: #565f89;
+  --chrome-accent: #7aa2f7;
+}
