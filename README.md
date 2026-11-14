@@ -4,11 +4,18 @@ Run a CLI agent on your machine, get a 6-digit code, share your terminal into so
 
 **Live:** https://peershell.vercel.app · **Source:** https://github.com/mealisohail/peershell
 
-Install the agent (needs Go 1.22+):
+## Quick start (hosted)
+
+On the machine you want to share (needs Go 1.22+):
 
 ```bash
 curl -fsSL https://peershell.vercel.app/install.sh | sh
+PEERSHELL_SERVER=wss://peershell.onrender.com/ws peershell
 ```
+
+The agent prints a 6-digit code. The other person opens https://peershell.vercel.app/app and types it in.
+
+> The hosted signaling server runs on Render's free tier and sleeps when idle — the first connection after a quiet spell can take 30–60 seconds.
 
 ![peershell demo: host runs the agent, viewer enters the 6-digit code, and gets a live shell in the browser](docs/media/demo.gif)
 
@@ -164,6 +171,13 @@ cd web && npm run build
 
 The signaling server has a Dockerfile (`signaling/Dockerfile`); `docker build -t peershell-signaling signaling/ && docker run -p 8080:8080 peershell-signaling`.
 
+The hosted version runs exactly this way, for free:
+
+- **Signaling → [Render](https://render.com)** free web service: root directory `signaling`, runtime Docker, health check `/health`.
+- **Web → [Vercel](https://vercel.com)**: root directory `web`, env var `VITE_SIGNALING_URL=wss://<your-render-host>/ws` (baked in at build time — redeploy after changing it).
+
+More free options (Oracle Cloud, Cloudflare tunnels, TURN) in [docs/DEPLOYMENT-FREE.md](docs/DEPLOYMENT-FREE.md).
+
 ### Security caveats when exposing publicly
 
 - The only thing standing between an attacker and a shell on your machine is the **6-digit pairing code** (1,000,000 combinations). Brute force is rate-limited (5 attempts/minute/IP, IP lock after 3 wrong tries), but the bound is statistical, not absolute.
@@ -199,6 +213,6 @@ The agent **cannot** run in Docker easily — it needs a real host PTY and to sp
 
 ## Status
 
-Through Phase 7 of the build plan. End-to-end terminal sharing works: agent ↔ signaling ↔ browser, with xterm.js wired to a real PTY.
+End-to-end terminal sharing works: agent ↔ signaling ↔ browser, with xterm.js wired to a real PTY. Live at https://peershell.vercel.app.
 
-See [PRD.md](PRD.md) for the full spec if it's present, or the original spec for build plan and acceptance criteria.
+Not yet: prebuilt agent binaries (the installer builds from source, so Go is required) and Windows support.
